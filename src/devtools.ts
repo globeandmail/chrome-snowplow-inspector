@@ -1,6 +1,6 @@
 chrome.devtools.panels.create(
-  "Snowplow",
-  "poplin-16.png",
+  "Sophi.io",
+  "sophi-16.png",
   "panel.html",
   undefined // no callback needed
 );

@@ -1,23 +1,23 @@
 {
   "manifest_version": 3,
 
-  "name": "Snowplow Inspector",
-  "description": "Add a new tab in Developer Tools to show Snowplow Analytics beacon information.",
+  "name": "Sophi Data Inspector",
+  "description": "Adds a panel to DevTools to show and validate Sophi tracking implementation.",
   "version": "0.2.22",
   "action": {
     "browser_style": true,
-    "default_title": "Snowplow Inspector",
+    "default_title": "Sophi Data Inspector",
     "default_popup": "popup.html",
     "default_icon": {
-      "280": "poplin.png"
+      "280": "sophi.png"
     }
   },
   "options_page": "options.html",
   "icons": {
-    "16": "poplin-16.png",
-    "48": "poplin-48.png",
-    "128": "poplin-128.png",
-    "280": "poplin.png"
+    "16": "sophi-16.png",
+    "48": "sophi-48.png",
+    "128": "sophi-128.png",
+    "280": "sophi.png"
   },
   "author": "Poplin Data",
   "minimum_chrome_version": "88.0",

@@ -116,7 +116,7 @@ export const Toolbar: FunctionComponent<IToolbar> = (props) => (
   <nav class="navbar is-flex-touch">
     <div class="navbar-brand">
       <a class="navbar-item" href={landingUrl} target="_blank">
-        <img alt="Poplin Data logo" src="pd-logo.png" />
+        <img alt="Sophi.io logo" src="s-logo.png" />
       </a>
     </div>
     <div class="navbar-menu is-active is-shadowless">
