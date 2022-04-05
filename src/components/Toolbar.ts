@@ -13,6 +13,7 @@ const toolbarView = (vnode: Vnode<IToolbar>) => {
           { onclick: vnode.attrs.clearRequests },
           "Clear Events"
         ),
+        /*
         m(
           "a.button.is-outlined.is-small.control",
           { onclick: () => vnode.attrs.changeApp("schemaManager") },
@@ -74,6 +75,7 @@ const toolbarView = (vnode: Vnode<IToolbar>) => {
           },
           "Import HAR Session"
         ),
+        */
       ];
       break;
     case "schemaManager":

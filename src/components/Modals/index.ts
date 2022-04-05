@@ -5,6 +5,7 @@ import { EditSchemas } from "./EditSchemas";
 import { EditTestSuites } from "./EditTestSuites";
 import { ImportRegistries } from "./ImportRegistries";
 import { LiveStream } from "./LiveStream";
+import { SophiConfig } from "./SophiConfig";
 
 export const modals = {
   badRows: BadRows,
@@ -13,6 +14,7 @@ export const modals = {
   editSchemas: EditSchemas,
   editTestSuites: EditTestSuites,
   importRegistries: ImportRegistries,
+  sophiConfig: SophiConfig,
   stream: LiveStream,
 } as const;
 

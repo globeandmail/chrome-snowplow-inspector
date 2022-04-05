@@ -60,6 +60,8 @@ export const SnowplowInspector: FunctionComponent = () => {
     [modalOpts]
   );
 
+  useEffect(() => setModal("sophiConfig", {resolver}), []);
+
   const app = [];
 
   app.push(
