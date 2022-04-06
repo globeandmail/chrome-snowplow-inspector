@@ -3,7 +3,7 @@ import { default as m, ClosureComponent } from "mithril";
 import { ModalSetter } from ".";
 import { buildRegistry, Resolver } from "../../ts/iglu";
 
-const SOPHI_CONFIG_API = "http://localhost:8000/sophiconfig/";
+const SOPHI_CONFIG_API = process.env.CONFIG_ENDPOINT;
 const uuidPattern =
   "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
 
@@ -21,16 +21,25 @@ const getConfig = (key: string, setModal: ModalSetter, resolver: Resolver) => {
     .request({
       method: "GET",
       url: SOPHI_CONFIG_API + key,
+      params: {
+        cb: +new Date(),
+      }
     })
     .then((config) => {
       if (typeof config === "object" && config) {
         if (
           config.hasOwnProperty("active") &&
-          (config as { active: boolean })["active"] === true
+          config.hasOwnProperty("key")
         ) {
           const sdic = config as SophiDataInspectorConfig;
-          resolver.import(false, ...sdic.registries.map(buildRegistry));
-          setModal(undefined, { sophiConfig: sdic });
+          if (sdic.active && sdic.key === key) {
+            chrome.storage.sync.set({ sophiConfig: key }, () => {
+              resolver.import(true, ...sdic.registries.map(buildRegistry));
+              resolver.walk();
+              setModal(undefined, { sophiConfig: sdic });
+            });
+            return;
+          }
         }
       }
 
