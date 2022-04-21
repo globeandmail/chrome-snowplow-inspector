@@ -21,10 +21,6 @@ body.themedark {
   --bulma-modal-background-background-color: #{$t};
   $t: rgba($bulma-white, 0.2);
   --bulma-delete-background-color: #{$t};
-
-  .navbar-brand img {
-    filter: brightness(350%);
-  }
 }
 
 .delete {

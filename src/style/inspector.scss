@@ -69,9 +69,10 @@ input[type="file"]::file-selector-button {
 
 .column.timeline {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: space-between;
   align-content: center;
+  gap: 1em;
 }
 
 .timeline__events {
