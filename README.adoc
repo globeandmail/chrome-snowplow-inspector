@@ -1,24 +1,31 @@
-= Snowplow Inspector Web Extension
+= Sophi Data Inspector Web Extension
 :Author: Poplin Data
 :Email: <contact@poplindata.com>
 
-A debugging tool to help you examine and debug your link:https://snowplowanalytics.com[Snowplow] tracking implementation.
+A debugging tool to help you examine and debug your link:https://sophi.io[Snowplow] tracking implementation.
 
-.Features
-- List and filter all your tracking events
-- See tracking parameters in human-friendly format
-- GET and POST tracking support
-- Automatically decode and parse link:https://snowplowanalytics.com/blog/2014/05/15/introducing-self-describing-jsons/[Self-Describing Events and Custom Contexts]
-- Validate your Contexts and Events against the schemas in your link:https://github.com/snowplow/iglu[Iglu Repository]
-- Import events from your bad rows bucket/stream and see why they failed enrichment
-
-Feedback, feature requests, pull requests, and bug reports are welcome! Please link:https://github.com/poplindata/chrome-snowplow-inspector/issues[file an issue].
+This is a customized version of the link:https://github.com/poplindata/chrome-snowplow-inspector/[Poplin Data extension], tailored for users implementing Sophi products.
 
 == Install
-At the moment, only Chrome/Chromium are supported via an official app store, and builds for Firefox are available, but not supported.
-The extension also works in [Microsoft Edge](https://www.microsoft.com/en-us/edge), but is not yet in the extension store.
-To install the extension, visit the page on the link:https://chrome.google.com/webstore/detail/maplkdomeamdlngconidoefjpogkmljm[Chrome Web Store].
-You can get builds for Firefox v60+ in link:https://github.com/poplindata/chrome-snowplow-inspector/releases[Releases].
+Until complete and uploaded to the Chrome Web Store, you have to build and install the extension locally.
+
+=== Build
+. Clone this repo
+. Install dependencies: `npm install`
+. Build the extension: `npm run build`
+. The built extension code should be created in a new `dist` folder
+. If you're happy with the build, `npm run zip` will produce a .zip file suitable for uploading to the Chrome Web Store for distribution
+
+=== Install Locally
+. Open Chrome
+. Head to the link:chrome://extensions/["Manage Extensions"] page
+.. (typically, the dots menu > More tools > Extensions).
+. Enable "Developer mode" using the toggle in the top right corner
+. A toolbar should appear that includes a "Load unpacked"
+. Click "Load unpacked", and navigate to the `dist` directory created from the build
+. The extension should ask for required permissions and install
+. Navigate to a site with Sophi implemented, open the Dev Tools
+. There should be a Sophi.io tab that activates the extension
 
 === Schema Validation
 The Schema Manager inside the extension should let you load in local JSON Schema files during development, and you can also add your production or Snowplow Mini Iglu Repositories to test against what you have in production.
@@ -39,12 +46,69 @@ are supported.
 
 By default we include the URL for link:https://github.com/snowplow/iglu-central[Iglu Central], which includes schemas for the built-in tracking JSONs. You can add as many repositories as you like.
 
+== Configuration API
+Unique to this version of the extension is the concept of a configuration key.
+
+The key is a secret UUID that is used to retrieve a customer-specific configuration.
+
+Once enabled (planned for v2), upon first open, the extension will ask the user to supply their configuration key.
+
+It will not become interactive until a valid key is supplied; the key can be changed or removed in the extension Options.
+
+Once provided, the key is used to make a GET request to the API endpoint (defined by setting the `CONFIG_ENDPOINT`) at build time.
+
+The API needs to return a JSON document containing the configuration for the corresponding key.
+
+For example:
+
+* during development the value from `.env.development` defines `CONFIG_ENDPOINT` to `http://localhost:8000/sophiconfig`
+* the user starts the extension, is prompted for a configuration key
+* the user supplies the key provided to them by Sophi (e.g. `6b49b558-cbea-4254-9014-ff97281ea01d`)
+* the extension makes a request to `http://localhost:8000/sophiconfig/6b49b558-cbea-4254-9014-ff97281ea01d`
+* the API returns the following config:
+```
+{
+  "key": "6b49b558-cbea-4254-9014-ff97281ea01d",
+  "active": true,
+  "client": "Test Client",
+  "registries": [{
+    "kind": "iglu",
+    "name": "Sophi.io Iglu Registry",
+    "uri": "https://sophi-example.iglu.snplow.net/api",
+    "apiKey": "11111111-2222-3333-4444-555555555555"
+  }],
+  "products": ["paywall"],
+  "custom": {
+    "params": {"APP_ID": "example.com"}
+  }
+}
+
+```
+
+* the extension verifies the config is valid and `active` is `true`
+* the extension saves the config key to storage for future use
+* the extension loads any registries defined in the configuration
+* the extension enables the built-in test suites for each named product in the `products` list
+* the prompt disappears and the extension becomes interactive
+
+On subsequent opens, the extension will see the saved configuration key, and automatically request and validate the configuration upon first loading.
+If the config value becomes inactive (`"active": false`) or the API doesn't provide a valid config, the extension will ask the user for a new key.
+
+The API format is intended to be simple to enable simple deployment (e.g. a static S3 bucket would work fine).
+
+Security isn't a huge consideration for protecting the config, relying on the obscurity provided by the entropy of UUIDs.
+
+For development purposes, you can save JSON files and host them locally quite simply. For example:
+```
+$ mkdir -p config/sophiconfig
+$ touch config/sophiconfig/6b49b558-cbea-4254-9014-ff97281ea01d
+$ # save your config JSON into config/sophiconfig/6b49b558-cbea-4254-9014-ff97281ea01d
+$ python3 -m http.server -d config &
+```
+This will serve the `config` directory and any files under it under `http://localhost:8000`, so when the extension requests a config it will load the local file.
+
+Prior to publishing v2 of the extension, the actual API endpoint will need to be specified (likely in a `.env.production` file or similar).
+
 == Develop
-=== Build
-Run `npm install` to install required dependencies, then `npm run build` to build the extension in the `dist/` directory.
-
-Instructions to install a local development version of the extension to test are over at the link:https://developer.chrome.com/extensions/getstarted#unpacked[extension development documentation].
-
-=== Hack
 You can also use `npm start` to start parcel in watch mode and symlink the resources to make editing easier; source changes should then be reflected immediately in `dist/`.
-You will still need to reload the extension in a browser.
+You may still need to reload the extension in a browser.
