@@ -12,6 +12,13 @@ const DEFAULT_REGISTRIES: RegistrySpec[] = [
     uri: "http://iglucentral.com",
     priority: 0,
   },
+  {
+    kind: "iglu",
+    name: "Sophi.io",
+    uri: "https://iglu-api.sophi.io/",
+    apiKey: "d66e19c5-900a-4813-bf28-4e1cfc5f1cb1",
+    priority: 0,
+  },
 ];
 
 export class Resolver extends Registry {
