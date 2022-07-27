@@ -81,6 +81,7 @@ const ToolbarView: FunctionComponent<IToolbar> = ({
           >
             Clear Events
           </a>
+          {/*}
           <a
             class="button is-outlined is-small control"
             onClick={changeToSchemaManager}
@@ -96,6 +97,7 @@ const ToolbarView: FunctionComponent<IToolbar> = ({
           <a class="button is-outlined is-small control" onClick={importHar}>
             Import HAR Session
           </a>
+          {*/}
         </>
       );
     case "schemaManager":

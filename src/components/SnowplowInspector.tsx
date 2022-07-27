@@ -1,5 +1,5 @@
 import { Entry } from "har-format";
-import { h, FunctionComponent, Fragment } from "preact";
+import { h, FunctionComponent, Fragment, JSX } from "preact";
 import {
   useCallback,
   useEffect,
@@ -60,9 +60,9 @@ export const SnowplowInspector: FunctionComponent = () => {
     [modalOpts]
   );
 
-  useEffect(() => setModal("sophiConfig", {resolver}), []);
+  //useEffect(() => setModal("sophiConfig", { resolver }), []);
 
-  const app = [];
+  const app: JSX.Element[] = [];
 
   app.push(
     <Toolbar
