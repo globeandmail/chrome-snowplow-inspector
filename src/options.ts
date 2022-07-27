@@ -22,7 +22,8 @@
     );
   };
 
-  const updateStoredSettings = () => {
+  const updateStoredSettings = (e: Event) => {
+    e.preventDefault();
     if (save.form?.checkValidity()) {
       chrome.storage.sync.set(
         {

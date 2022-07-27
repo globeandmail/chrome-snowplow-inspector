@@ -18,27 +18,29 @@
       }
     </style>
     <body>
-      <label>
-        <input
-          type="text"
-          id="config"
-          pattern="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"
-        />
-        Sophi Configuration Key
-      </label>
+      <form>
+        <label>
+          <input
+            type="text"
+            id="config"
+            pattern="[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"
+          />
+          Sophi Configuration Key
+        </label>
 
-      <label>
-        <input type="checkbox" id="compactCore" />
-        Use collapsible layout for core beacon fields
-      </label>
+        <label>
+          <input type="checkbox" id="compactCore" />
+          Use collapsible layout for core beacon fields
+        </label>
 
-      <label>
-        <input type="checkbox" id="track" />
-        Send anonymous usage information
-      </label>
+        <label>
+          <input type="checkbox" id="track" />
+          Send anonymous usage information
+        </label>
 
-      <p id="status"></p>
-      <button id="save">Save</button>
+        <p id="status"></p>
+        <button id="save">Save</button>
+      </form>
       <script src="options.ts"></script>
     </body>
   </head>
